@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los hombres de Paco</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inconsolata', monospace;
+            font-size: 1.2em;
+        }
+
+        form.form {
+            width: 70%;
+            margin: auto;
+            background-image: url(https://imagenes.atresplayer.com/atp/clipping/cmsimages01/2020/03/17/F7EFB56D-23A9-4312-A666-00CC0B4E0067//1280x720.jpg);
+            background-repeat: repeat-y;
+
+        }
+
+        .form-control {
+            background-color: rgba(0, 0, 0, .3);
+            border: 1px solid blue;
+            padding: 1em;
+            margin: .5em auto .5em auto;
+            color: white;
+        }
+
+        .form-control input {
+            padding: .5em;
+            border: 1px solid royalblue;
+        }
+
+        .form-control input:selected {
+            border: 1px solid seagreen;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div>
+            <h1 class="center">Los hombres de Paco</h1>
+            <form class="form">
+                <div class="form-control">
+                    <label for="dnf">Digita 8 numeros para generar un <strong>DNF</strong></label>
+                    <input type="text" maxlength="8" id="dnf" placeholder="Digita 8 numeros" />
+                    <div>
+                        <ul id="dnf-generado"></ul>
+                    </div>
+                </div>
+
+                <div class="form-control">
+                    <label for="dne">Digita 7 numeros para generar un <strong>DNE</strong></label>
+                    <input type="text" maxlength="7" id="dne" placeholder="Digita 7 numeros" />
+                    <div>
+                        <ul id="dne-generado"></ul>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </section>
+
+</body>
+<script>
+
+    let con = 0;
+    let txt = '';
+    let counter_dnf = 0;
+    let counter_dne = 0;
+    const letrasDNF = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
+    const letrasDNE = ['X', 'Y', 'Z'];
+    let text_dnf = '';
+    let text_dne = '';
+    let dnf = document.getElementById('dnf');
+    let dne = document.getElementById('dne');
+    let dnfs_generados = [];
+    let dnes_generados = [];
+
+    window.onload = function () {
+
+        dnf.addEventListener('keyup', verificaInput, false);
+        dne.addEventListener('keyup', verificaInput, false);
+
+    };
+    function generarDNF() {
+        //genera una letra del array letrasDNF
+        let index = Math.floor((parseInt(dnf.value)) % 23);
+        dnfs_generados[counter_dnf] = (dnf.value + letrasDNF[index]);
+
+        counter_dnf++;
+
+        let item = document.createElement('li');
+
+        item.textContent = dnfs_generados[dnfs_generados.length - 1];
+
+        document.getElementById('dnf-generado').appendChild(item);
+        text_dnf = '';
+        dnf.value = '';
+        dnf.focus();
+    }
+
+    function generarDNE() {
+        //genera una letra del array letrasDNE
+        //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
+        text_dne = dne.value;
+        text_dne += letrasDNE.indexOf(letrasDNE[Math.floor(Math.random() * (letrasDNE.length))]);
+        //se aplica el mismo algoritmo de DNF
+        let res = Math.floor(parseInt(text_dne) % 23);
+
+        dnes_generados[counter_dne] = (text_dne + letrasDNF[res]);
+
+        counter_dne++;
+
+        let item = document.createElement('li');
+
+        item.textContent = dnes_generados[dnes_generados.length - 1];
+
+        document.getElementById('dne-generado').appendChild(item);
+        text_dne = '';
+        dne.value = '';
+        dne.focus();
+    }
+    function verificaInput(e) {
+
+        if ((e.charCode || e.keyCode) === 8) {
+            cleanInput(e.target);
+        }
+        generar_dne_o_dnf(e.target, (e.charCode || e.keyCode));
+    }
+
+    function cleanInput(input) {
+
+
+        if (input.value.length >= 0) {
+            if (input.id === 'dnf') {
+                text_dnf = input.value.substr(0, (input.value.length - 1));
+            } else {
+                text_dne = input.value.substr(0, (input.value.length - 1));
+            }
+
+        }
+    }
+    function generar_dne_o_dnf(input, c) {
+
+console.log('Valor de c: '+c)
+        if ((c > 46 && c < 58)) {
+
+            if (input.id === 'dne') {
+                text_dne += String.fromCharCode(c);
+                if (input.value.length === 7) {
+                    generarDNE();
+                }
+
+            } if (input.id === 'dnf') {
+                text_dnf += String.fromCharCode(c);
+                if (input.value.length === 8) {
+                    generarDNF();
+                }
+
+            }
+
+        } else {
+            if (input.id === 'dne') {
+                //se reemplaza el texto del input
+                dne.value = text_dne;
+            } else {
+                dnf.value = text_dnf;
+            }
+        }
+
+    }
+</script>
+
+</html>
