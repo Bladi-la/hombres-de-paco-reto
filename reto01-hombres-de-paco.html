@@ -40,7 +40,8 @@
         .center {
             text-align: center;
         }
-        .msj-error{
+
+        .msj-error {
             color: white;
             text-shadow: 3px 2px red;
             font-style: italic;
@@ -118,11 +119,11 @@
     }
 
     function generarDNE() {
-        //genera una letra del array letrasDNE
-        //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
+
         text_dne = dne.value;
+        //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
         text_dne += letrasDNE.indexOf(letrasDNE[Math.floor(Math.random() * (letrasDNE.length))]);
-        //se aplica el mismo algoritmo de DNF
+        //se aplica el mismo algoritmo que para el DNF
         let res = Math.floor(parseInt(text_dne) % 23);
 
         dnes_generados[counter_dne] = (text_dne + letrasDNF[res]);
@@ -142,11 +143,11 @@
 
         let c = (e.charCode || e.keyCode);
         document.getElementById('mensaje-error-dnf').innerHTML = " ";
-            document.getElementById('mensaje-error-dne').innerHTML = " ";
+        document.getElementById('mensaje-error-dne').innerHTML = " ";
 
-        if (c > 47 && c < 58) {
+        if (c > 47 && c < 58 || e.key === 'ContextMenu') {
 
-            generar_dne_o_dnf(e);
+            generar_dne_o_dne(e);
 
         } else {
             cleanInput(e);
@@ -166,7 +167,7 @@
 
 
     }
-    function generar_dne_o_dnf(e) {
+    function generar_dne_o_dne(e) {
 
         if (e.target.id === 'dne') {
             if (e.target.value.length === 7) {
