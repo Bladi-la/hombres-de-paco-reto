@@ -29,8 +29,10 @@
         }
 
         .form-control input {
+            margin: .5em;
             padding: .5em;
             border: 1px solid royalblue;
+            display: inline-block;
         }
 
         .form-control input:selected {
@@ -42,8 +44,8 @@
         }
 
         .msj-error {
-            color: white;
-            text-shadow: 3px 2px red;
+            color:orangered;
+            text-shadow: 0px 0px 5px white;
             font-style: italic;
         }
     </style>
@@ -103,8 +105,8 @@
     };
     function generarDNF() {
         //genera una letra del array letrasDNF
-        let index = Math.floor((parseInt(dnf.value)) % 23);
-        dnfs_generados[counter_dnf] = (dnf.value + letrasDNF[index]);
+        let res = Math.floor((parseInt(dnf.value)) % 23);
+        dnfs_generados[counter_dnf] = (dnf.value + letrasDNF[res]);
 
         counter_dnf++;
 
@@ -160,35 +162,22 @@
         if (!teclas_omitidas.includes(e.key) || ((e.keyCode) > 57 && (e.keyCode) < 166) || e.keyCode === '32') {
             if (e.target.value.length >= 0) {
                 e.target.value = e.target.value.substr(0, (e.target.value.length - 1));
-                lanzarMensajeError(e);
+                document.getElementById('mensaje-error-' + e.target.id).innerHTML = "Solo se permiten numeros!";
             }
 
         }
-
-
     }
     function generar_dne_o_dne(e) {
 
-        if (e.target.id === 'dne') {
-            if (e.target.value.length === 7) {
-                generarDNE();
-            }
-
+        if (e.target.id === 'dne' && e.target.value.length === 7) {
+            generarDNE();
         } else {
             if (e.target.value.length === 8) {
                 generarDNF();
             }
+        }
+    }
 
-        }
-    }
-    function lanzarMensajeError(e) {
-        console.log('Error')
-        if (e.target.id === 'dnf') {
-            document.getElementById('mensaje-error-dnf').innerHTML = "Solo se permiten numeros!";
-        } else {
-            document.getElementById('mensaje-error-dne').innerHTML = "Solo se permiten numeros!";
-        }
-    }
 </script>
 
 </html>
