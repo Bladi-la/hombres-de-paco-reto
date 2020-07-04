@@ -13,7 +13,10 @@
             font-size: 1.2em;
             background-color: rgba(1, 1, 1, 0.9);
         }
-        h1{ color: #fff;}
+
+        h1 {
+            color: #fff;
+        }
 
         form.form {
             border-radius: 30px;
@@ -24,8 +27,9 @@
             background-color: transparent;
             border: 5px solid #f05720;
             color: #fff;
-            text-shadow: 0px 0px 8px#f05720;;
-        } 
+            text-shadow: 0px 0px 8px#f05720;
+            ;
+        }
 
         div.form-control.first-div {
             border-radius: 20px 20px 0 0;
@@ -110,7 +114,7 @@
     const TECLASOMITIDAS = ['Meta', 'Control', 'Fin', 'AltGraph', 'Alt', 'Ctrl', 'Enter', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Insert'
         , 'Clear', 'Home', 'PageUp', 'PageDawn', 'CapsLock', 'Delete', 'End', 'NumLock', 'Shift', 'Escape', 'Backspace'];
 
-    let textDnf= '';
+    let textDnf = '';
     let textDne = '';
     let dnf = document.getElementById('dnf');
     let dne = document.getElementById('dne');
@@ -130,6 +134,8 @@
         if (dnf.value.match(regexDnf)) {
 
             let res = Math.floor((parseInt(dnf.value)) % 23);
+            console.log(res)
+            console.log(LETRASDNF[res])
             dnfsGenerados[counterDnf] = (dnf.value + LETRASDNF[res]);
 
             counterDnf++;
@@ -142,7 +148,7 @@
         } else {
             document.getElementById('mensaje-error-dnf').innerHTML = "Solo se permiten numeros!";
         }
-        textDnf= '';
+        textDnf = '';
         dnf.value = '';
         dnf.focus();
     }
@@ -153,9 +159,10 @@
         if (dne.value.match(regexDne)) {
             //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
             textDne = dne.value;
-            textDne += LTRASDNE.indexOf(LETRASDNE[Math.floor(Math.random() * (LETRASDNE.length))]);
+            textDne += LETRASDNE.indexOf(LETRASDNE[Math.floor(Math.random() * (LETRASDNE.length))]);
+
             //se aplica el mismo algoritmo que para el DNF
-            let res = Math.floor(parseInt(text_dne) % 23);
+            let res = Math.floor(parseInt(textDne.trim()) % 23);
 
             dnesGenerados[counterDne] = (textDne + LETRASDNF[res]);
 
