@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Los hombres de Paco</title>
+    <link rel="stylesheet" href="normalize.css">
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inconsolata', monospace;
             font-size: 1.2em;
+            background-color: rgba(1, 1, 1, 0.9);
         }
+        h1{ color: #fff;}
 
         form.form {
             border-radius: 30px;
@@ -19,31 +22,35 @@
             background-image: url(https://imagenes.atresplayer.com/atp/clipping/cmsimages01/2020/03/17/F7EFB56D-23A9-4312-A666-00CC0B4E0067//1280x720.jpg);
             background-repeat: repeat-y;
             background-color: transparent;
-        }
+            border: 5px solid #f05720;
+            color: #fff;
+            text-shadow: 0px 0px 8px#f05720;;
+        } 
 
         div.form-control.first-div {
-            border-bottom-style: none;
+            border-radius: 20px 20px 0 0;
             margin-bottom: 0;
         }
 
         div.form-control.andre-div {
             border-top: none;
+            border-radius: 0 0 20px 20px;
             margin-top: 0;
         }
 
         .form-control {
-            background-color: rgba(0, 0, 0, .3);
-            border: 1px solid blue;
             padding: 1em;
-            margin: .5em auto .5em auto;
-            color: white;
+            margin: auto;
+            background-color: rgba(15, 15, 15, 0.3);
         }
 
         .form-control input {
             margin: .5em;
             padding: .5em;
-            border: 1px solid royalblue;
+            border: 3px solid coral;
             display: inline-block;
+            color: white;
+            background-color: rgba(15, 15, 15, 0.3);
         }
 
         .form-control input:selected {
@@ -55,8 +62,8 @@
         }
 
         .msj-error {
-            color: orangered;
-            text-shadow: 0px 0px 8px white;
+            color: white;
+            text-shadow: 0px 0px 8px orangered;
             font-style: italic;
         }
     </style>
@@ -94,8 +101,8 @@
 
     let regex_dne = /^[0-9]{7}$/g;
     let regex_dnf = /^[0-9]{8}$/g;
-    let con = 0;
-    let txt = '';
+
+
     let counter_dnf = 0;
     let counter_dne = 0;
     const letrasDNF = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
@@ -119,11 +126,10 @@
     function generarDNF() {
 
         //genera una letra del array letrasDNF
-        let res = Math.floor((parseInt(dnf.value)) % 23);
-     
-        let validator = dnf.value.match(regex_dnf)
-        
-        if (validator !== null) {
+
+        if (dnf.value.match(regex_dnf)) {
+
+            let res = Math.floor((parseInt(dnf.value)) % 23);
             dnfs_generados[counter_dnf] = (dnf.value + letrasDNF[res]);
 
             counter_dnf++;
@@ -143,14 +149,13 @@
 
     function generarDNE() {
 
-        text_dne = dne.value;
-        let validator = dne.value.match(regex_dne)
-        if (validator !== null) {
+
+        if (dne.value.match(regex_dne)) {
             //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
+            text_dne = dne.value;
             text_dne += letrasDNE.indexOf(letrasDNE[Math.floor(Math.random() * (letrasDNE.length))]);
             //se aplica el mismo algoritmo que para el DNF
             let res = Math.floor(parseInt(text_dne) % 23);
-            //console.log(res)
 
             dnes_generados[counter_dne] = (text_dne + letrasDNF[res]);
 
@@ -162,7 +167,7 @@
 
             document.getElementById('dne-generado').appendChild(item);
 
-        }else{
+        } else {
             document.getElementById('mensaje-error-dne').innerHTML = "Solo se permiten numeros!";
         }
         text_dne = '';
@@ -177,7 +182,7 @@
 
         if (c > 47 && c < 58 || e.key === 'ContextMenu') {
 
-            generar_dne_o_dne(e);
+            generar_dne_o_dnf(e);
 
         } else {
             cleanInput(e);
@@ -190,11 +195,11 @@
         if (!teclas_omitidas.includes(e.key) || ((e.keyCode) > 57 && (e.keyCode) < 166) || e.keyCode === '32') {
             if (e.target.value.length >= 0) {
                 e.target.value = e.target.value.substr(0, (e.target.value.length - 1));
-                document.getElementById('mensaje-error-' + e.target.id).innerHTML = "Solo se permiten numeros!";
+                document.getElementById('mensaje-error-' + e.target.id).innerHTML = "NO se permiten caracteres como: " + e.key + "!";
             }
         }
     }
-    function generar_dne_o_dne(e) {
+    function generar_dne_o_dnf(e) {
 
         if (e.target.id === 'dne' && e.target.value.length === 7) {
             generarDNE();
