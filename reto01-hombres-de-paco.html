@@ -99,23 +99,23 @@
 </body>
 <script>
 
-    let regex_dne = /^[0-9]{7}$/g;
-    let regex_dnf = /^[0-9]{8}$/g;
+    let regexDne = /^[0-9]{7}$/g;
+    let regexDnf = /^[0-9]{8}$/g;
 
 
-    let counter_dnf = 0;
-    let counter_dne = 0;
-    const letrasDNF = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
-    const letrasDNE = ['X', 'Y', 'Z'];
-    let teclas_omitidas = ['Meta', 'Control', 'Fin', 'AltGraph', 'Alt', 'Ctrl', 'Enter', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Insert'
+    let counterDnf = 0;
+    let counterDne = 0;
+    const LETRASDNF = ['T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E'];
+    const LETRASDNE = ['X', 'Y', 'Z'];
+    const TECLASOMITIDAS = ['Meta', 'Control', 'Fin', 'AltGraph', 'Alt', 'Ctrl', 'Enter', 'ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Insert'
         , 'Clear', 'Home', 'PageUp', 'PageDawn', 'CapsLock', 'Delete', 'End', 'NumLock', 'Shift', 'Escape', 'Backspace'];
 
-    let text_dnf = '';
-    let text_dne = '';
+    let textDnf= '';
+    let textDne = '';
     let dnf = document.getElementById('dnf');
     let dne = document.getElementById('dne');
-    let dnfs_generados = [];
-    let dnes_generados = [];
+    let dnfsGenerados = [];
+    let dnesGenerados = [];
 
     window.onload = function () {
 
@@ -123,54 +123,54 @@
         dne.addEventListener('keyup', verificaInput, false);
 
     };
-    function generarDNF() {
+    function generarDnf() {
 
         //genera una letra del array letrasDNF
 
-        if (dnf.value.match(regex_dnf)) {
+        if (dnf.value.match(regexDnf)) {
 
             let res = Math.floor((parseInt(dnf.value)) % 23);
-            dnfs_generados[counter_dnf] = (dnf.value + letrasDNF[res]);
+            dnfsGenerados[counterDnf] = (dnf.value + LETRASDNF[res]);
 
-            counter_dnf++;
+            counterDnf++;
 
             let item = document.createElement('li');
 
-            item.textContent = dnfs_generados[dnfs_generados.length - 1];
+            item.textContent = dnfsGenerados[dnfsGenerados.length - 1];
 
             document.getElementById('dnf-generado').appendChild(item);
         } else {
             document.getElementById('mensaje-error-dnf').innerHTML = "Solo se permiten numeros!";
         }
-        text_dnf = '';
+        textDnf= '';
         dnf.value = '';
         dnf.focus();
     }
 
-    function generarDNE() {
+    function generarDne() {
 
 
-        if (dne.value.match(regex_dne)) {
+        if (dne.value.match(regexDne)) {
             //se obtiene el digito de control a patir de X:0,Y:1, o Z:2
-            text_dne = dne.value;
-            text_dne += letrasDNE.indexOf(letrasDNE[Math.floor(Math.random() * (letrasDNE.length))]);
+            textDne = dne.value;
+            textDne += LTRASDNE.indexOf(LETRASDNE[Math.floor(Math.random() * (LETRASDNE.length))]);
             //se aplica el mismo algoritmo que para el DNF
             let res = Math.floor(parseInt(text_dne) % 23);
 
-            dnes_generados[counter_dne] = (text_dne + letrasDNF[res]);
+            dnesGenerados[counterDne] = (textDne + LETRASDNF[res]);
 
-            counter_dne++;
+            counterDne++;
 
             let item = document.createElement('li');
 
-            item.textContent = dnes_generados[dnes_generados.length - 1];
+            item.textContent = dnesGenerados[dnesGenerados.length - 1];
 
             document.getElementById('dne-generado').appendChild(item);
 
         } else {
             document.getElementById('mensaje-error-dne').innerHTML = "Solo se permiten numeros!";
         }
-        text_dne = '';
+        textDne = '';
         dne.value = '';
         dne.focus();
     }
@@ -182,7 +182,7 @@
 
         if (c > 47 && c < 58 || e.key === 'ContextMenu') {
 
-            generar_dne_o_dnf(e);
+            generarDneDnf(e);
 
         } else {
             cleanInput(e);
@@ -192,20 +192,20 @@
 
     function cleanInput(e) {
 
-        if (!teclas_omitidas.includes(e.key) || ((e.keyCode) > 57 && (e.keyCode) < 166) || e.keyCode === '32') {
+        if (!TECLASOMITIDAS.includes(e.key) || ((e.keyCode) > 57 && (e.keyCode) < 166) || e.keyCode === '32') {
             if (e.target.value.length >= 0) {
                 e.target.value = e.target.value.substr(0, (e.target.value.length - 1));
                 document.getElementById('mensaje-error-' + e.target.id).innerHTML = "NO se permiten caracteres como: " + e.key + "!";
             }
         }
     }
-    function generar_dne_o_dnf(e) {
+    function generarDneDnf(e) {
 
         if (e.target.id === 'dne' && e.target.value.length === 7) {
-            generarDNE();
+            generarDne();
         } else {
             if (e.target.value.length === 8) {
-                generarDNF();
+                generarDnf();
             }
         }
     }
